@@ -11,7 +11,7 @@ class CartManagement
     //add item to cart
     static public function addItemToCart($product_id)
     {
-        $cart_items = self::addCartItemsToCookie();
+        $cart_items = self::getCartItemsFromCookie();
 
         $existing_item = null;
 
