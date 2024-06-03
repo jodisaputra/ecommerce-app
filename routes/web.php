@@ -36,6 +36,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/my-orders', \App\Livewire\MyOrderPage::class);
     Route::get('/my-orders/{order}', \App\Livewire\MyOrderDetailPage::class);
 
-    Route::get('/success', \App\Livewire\SuccessPage::class);
-    Route::get('/cancel', \App\Livewire\CancelPage::class);
+    Route::get('/success', \App\Livewire\SuccessPage::class)->name('success');
+    Route::get('/cancel', \App\Livewire\CancelPage::class)->name('cancel');
 });
