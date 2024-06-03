@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Models\User;
+use Filament\Forms\Components\Select;
 use Filament\Tables;
 use Filament\Forms\Form;
 use Filament\Pages\Page;
@@ -16,6 +17,7 @@ use Filament\Forms\Components\DateTimePicker;
 use App\Filament\Resources\UserResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\UserResource\RelationManagers;
+use Illuminate\Support\Facades\Hash;
 
 class UserResource extends Resource
 {
@@ -45,8 +47,15 @@ class UserResource extends Resource
 
                 TextInput::make('password')
                     ->password()
-                    ->dehydrated(fn($state) => filled($state))
-                    ->required(fn(Page $livewire): bool => $livewire instanceof CreateRecord)
+                    ->dehydrateStateUsing(fn ($state) => Hash::make($state))
+                    ->dehydrated(fn ($state) => filled($state))
+                    ->required(fn (Page $livewire) => ($livewire instanceof CreateRecord)),
+
+                Select::make('role')
+                    ->options([
+                        'admin' => 'Admin',
+                        'user' => 'User',
+                    ])->default('user')
 
             ]);
     }
@@ -57,6 +66,7 @@ class UserResource extends Resource
             ->columns([
                 TextColumn::make('name')->searchable(),
                 TextColumn::make('email')->searchable(),
+                TextColumn::make('role')->searchable(),
                 TextColumn::make('email_verified_at')->dateTime()->sortable(),
                 TextColumn::make('created_at')->dateTime()->sortable(),
 
